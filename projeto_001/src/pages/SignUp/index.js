@@ -1,44 +1,55 @@
+import React, { useState, useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { AuthContext } from '../../contexts/auth'
 
-import React, {useState, useContext} from 'react';
-import {Link} from 'react-router-dom';
-import { AuthContext } from '../../contexts/auth';
-
-import logo from '../../assets/logo.png';
-
-
+import logo from '../../assets/logo.png'
 
 function SignUp() {
+  const [nome, setNome] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { signUp } = useContext(AuthContext)
 
-  const {signUp} = useContext(AuthContext);
-  
-  function handleSubmit(e){
-    e.preventDefault();
-    if(email!=='' && nome!=='' && password!==''){
+  function handleSubmit(e) {
+    e.preventDefault()
+    if (email !== '' && nome !== '' && password !== '') {
       signUp(email, password, nome)
     }
   }
 
   return (
-    <div className="container-center">
-      <div className=" login">
-        <div className=" login-area">
-          <img src ={logo} alt="Logo do Sistema"/>
+    <div className='container-center'>
+      <div className=' login'>
+        <div className=' login-area'>
+          <img src={logo} alt='Logo do Sistema' />
         </div>
         <form onSubmit={handleSubmit}>
           <h1>Cadastrar uma Conta</h1>
-          <input type="text" placeholder="Digitar seu nome" value={nome} onChange={(e)=>setNome(e.target.value)}/>
-          <input type="text" placeholder="email@email.com" value={email} onChange={(e)=>setEmail(e.target.value)}/>
-          <input type="password" placeholder="*************" value={password} onChange={(e)=>setPassword(e.target.value)}/>
-          <button type="submit">Cadastrar</button>
+          <input
+            type='text'
+            placeholder='Digitar seu nome'
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+          <input
+            type='text'
+            placeholder='email@email.com'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type='password'
+            placeholder='*************'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type='submit'>Cadastrar</button>
         </form>
-        <Link to = '/'>Já possui uma conta? Faça seu Login</Link>
+        <Link to='/'>Já possui uma conta? Faça seu Login</Link>
       </div>
     </div>
-  );
+  )
 }
 
-export default SignUp;
+export default SignUp

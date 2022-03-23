@@ -1,15 +1,14 @@
+import { useContext } from 'react'
 
-import { useContext } from 'react';
+import { AuthContext } from '../../contexts/auth'
 
-import { AuthContext } from '../../contexts/auth';
+export default function Dashboard() {
+  const { signOut } = useContext(AuthContext)
 
-export default function Dashboard(){
-  const { signOut } = useContext(AuthContext);
-
-  return(
+  return (
     <div>
       <h1>PAGINA DASHBOARD</h1>
-      <button onClick={ () => signOut() }>Fazer logout</button>
+      <button onClick={() => signOut()}>Fazer logout</button>
     </div>
   )
 }
