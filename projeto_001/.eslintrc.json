@@ -7,9 +7,12 @@
         "plugin:react/recommended",
         "airbnb",
         "prettier",
-        "prettier/react"
+        "prettier/react",
+        "prettier/babel"
     ],
+    
     "parser": "babel-eslint",
+
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true

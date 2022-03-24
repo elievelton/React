@@ -1,64 +1,64 @@
-import React, { useState, createContext, useEffect } from "react";
-import firebase from "../services/firebaseConnection";
+import React, { useState, createContext, useEffect } from 'react'
+import firebase from '../services/firebaseConnection'
 
-export const AuthContext = createContext({});
+export const AuthContext = createContext({})
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loadingAuth, setLoadingAuth] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null)
+  const [loadingAuth, setLoadingAuth] = useState(false)
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     function loadStorage() {
-      const storageUser = localStorage.getItem("SistemaUser");
+      const storageUser = localStorage.getItem('SistemaUser')
       if (storageUser) {
-        setUser(JSON.parse(storageUser));
-        setLoading(false);
+        setUser(JSON.parse(storageUser))
+        setLoading(false)
       }
-      setLoading(false);
+      setLoading(false)
     }
-    loadStorage();
-  }, []);
+    loadStorage()
+  }, [])
   //fazendo login de um usuario
   async function signIn(email, password) {
-    setLoadingAuth(true);
+    setLoadingAuth(true)
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(async (value) => {
-        let uid = value.user.uid;
+        let uid = value.user.uid
 
         // Buscando o user no banco de dados Firebase
         const userProfile = await firebase
           .firestore()
-          .collection("user")
+          .collection('user')
           .doc(uid)
-          .get();
+          .get()
         let data = {
           uid: uid,
           nome: userProfile.data().nome,
           email: value.user.email,
           avatarUrl: userProfile.data().avatarUrl,
-        };
-        setUser(data);
-        storageUser(data);
-        setLoadingAuth(false);
+        }
+        setUser(data)
+        storageUser(data)
+        setLoadingAuth(false)
       })
       .catch((error) => {
-        console.log(error);
-        setLoadingAuth(false);
-      });
+        console.log(error)
+        setLoadingAuth(false)
+      })
   }
   //Cadastrando um novo usuario
   async function signUp(email, password, nome) {
-    setLoadingAuth(true);
+    setLoadingAuth(true)
     await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(async (value) => {
-        let uid = value.user.uid;
+        let uid = value.user.uid
         await firebase
           .firestore()
-          .collection("user")
+          .collection('user')
           .doc(uid)
           .set({
             nome: nome,
@@ -70,27 +70,27 @@ function AuthProvider({ children }) {
               nome: nome,
               email: value.user.email,
               avatarUrl: null,
-            };
-            setUser(data);
-            storageUser(data);
-            setLoadingAuth(false);
-          });
+            }
+            setUser(data)
+            storageUser(data)
+            setLoadingAuth(false)
+          })
       })
       .catch((error) => {
-        console.log(error);
-        setLoadingAuth(false);
-      });
+        console.log(error)
+        setLoadingAuth(false)
+      })
   }
 
   function storageUser(data) {
-    localStorage.setItem("SistemaUser", JSON.stringify(data));
+    localStorage.setItem('SistemaUser', JSON.stringify(data))
   }
 
   // deslogar usuario
   async function signOut() {
-    await firebase.auth().signOut();
-    localStorage.removeItem("SistemaUser");
-    setUser(null);
+    await firebase.auth().signOut()
+    localStorage.removeItem('SistemaUser')
+    setUser(null)
   }
 
   return (
@@ -103,9 +103,9 @@ function AuthProvider({ children }) {
         signOut,
       }}
     >
-      {" "}
-      {children}{" "}
+      {children}
     </AuthContext.Provider>
-  );
+  )
 }
-export default AuthProvider;
+
+export default AuthProvider
